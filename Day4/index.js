@@ -24,7 +24,7 @@ const { connectDB } = require("./src/config/db");
 
 const app = express();
 
-app.use(cors());
+app.use(cors()); 
 app.use(express.json());
 
 connectDB();
@@ -33,4 +33,4 @@ app.use("/courses", courseRouter);
 
 app.listen(3000, () => {
   console.log("Server running");
-});
+}); 
