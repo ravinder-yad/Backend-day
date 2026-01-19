@@ -7,11 +7,7 @@ const authService = async (req, res) => {
 
     const user = await Auth.create({ email, password });
 
-    const token = jwt.sign(
-      { id: user._id },
-      "secretkey",
-      { expiresIn: "1d" }
-    );
+    const token = jwt.sign({ id: user._id }, "secretkey", { expiresIn: "1d" });
 
     res.status(201).json({ user, token });
   } catch (error) {

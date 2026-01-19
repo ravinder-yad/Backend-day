@@ -16,4 +16,14 @@ const add = async (req, res) => {
     res.send(blog)
 };
 
-module.exports = { add };
+const del = async (req, res) => {
+    const status = await Blog.findByIdAndDelete(req.params.id)
+
+    if (status) {
+        res.status(200).json({message: "Deleted Successfully."})
+    } else {
+        res.status(409).json({message: "Something went Wrong."})
+    }
+};
+
+module.exports = { add, del };

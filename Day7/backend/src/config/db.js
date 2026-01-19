@@ -10,3 +10,4 @@ const Practic = async () => {
 };
 
 module.exports = { Practic };
+94

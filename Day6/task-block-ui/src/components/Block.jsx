@@ -38,6 +38,16 @@ const Block = () => {
     setLongDesc("");
   };
 
+  // delete function
+
+  const remove = (index) => {
+    const updatedBlogs = blogs.filter((_, i) => i !== index);
+    setBlogs(updatedBlogs);
+    localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
+  };
+  
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 p-6">
       {/* FORM */}
