@@ -8,7 +8,7 @@ const add = async (req, res) => {
     const data = await Auth.create({
       Tiktname,
       Parice,
-      Movename,
+      Movename, 
       contectnumber,
       Address,
     });

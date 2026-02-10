@@ -3,16 +3,12 @@ const Book = require("../models/productModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-// Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, "secretkey", {
     expiresIn: "30d",
   });
 };
 
-// @desc    Register new user
-// @route   POST /api/register
-// @access  Public
 const registerUser = async (req, res) => {
   try {
     const { name, lastname, email, password } = req.body;
@@ -52,9 +48,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Authenticate a user
-// @route   POST /api/login
-// @access  Public
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -76,9 +69,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Add a book
-// @route   POST /api/books
-// @access  Private
+
 const addProducts = async (req, res) => {
   try {
     // Destructure fields matching the user's Postman body
@@ -89,9 +80,8 @@ const addProducts = async (req, res) => {
       return res.status(400).json({ message: "Title, author, price, and category are required" });
     }
 
-    // Create book with user ID from the protected middleware (req.user)
     const book = await Book.create({
-      user: req.user.id, // ASSOCIATE BOOK WITH USER
+      user: req.user.id, 
       title,
       author,
       price,
@@ -112,9 +102,7 @@ const addProducts = async (req, res) => {
   }
 };
 
-// @desc    Get all books
-// @route   GET /api/books
-// @access  Private (User specific)
+
 const getProducts = async (req, res) => {
   try {
     // Only find books belonging to the logged-in user
@@ -126,9 +114,7 @@ const getProducts = async (req, res) => {
   }
 };
 
-// @desc    Search books by title
-// @route   GET /api/books/search?title=keyword
-// @access  Private (User specific)
+
 const searchProducts = async (req, res) => {
   try {
     const { title } = req.query;
@@ -137,7 +123,6 @@ const searchProducts = async (req, res) => {
       return res.status(400).json({ message: "Search title is required" });
     }
 
-    // Only search within user's own books
     const search = await Book.find({
       user: req.user.id,
       title: { $regex: title, $options: "i" },
@@ -150,9 +135,7 @@ const searchProducts = async (req, res) => {
   }
 };
 
-// @desc    Get single book
-// @route   GET /api/books/:id
-// @access  Private
+
 const getOne = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
@@ -161,7 +144,6 @@ const getOne = async (req, res) => {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    // Optional: Ensure user can only view their own book
     if (book.user.toString() !== req.user.id) {
       return res.status(401).json({ message: "Not authorized to view this book" });
     }
@@ -184,3 +166,4 @@ module.exports = {
   searchProducts,
   getOne,
 };
+ 
