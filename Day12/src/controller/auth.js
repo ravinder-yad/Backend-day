@@ -180,17 +180,4 @@ const updateAppointment = async (req, res) => {
   }
 };
 
-module.exports = {
-  addDoctor,
-  getDoctor,
-  updateDoctor,
-  deleteDoctor,
-  addPatient,
-  getPatient,
-  deletePatient,
-  updatePatient,
-  addAppointment,
-  getAppointment,
-  deleteAppointment,
-  updateAppointment,
-};
+module.exports = { addDoctor,getDoctor,updateDoctor,deleteDoctor,addPatient, getPatient,deletePatient,updatePatient,addAppointment,getAppointment, deleteAppointment, updateAppointment,};

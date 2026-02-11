@@ -1,102 +1,104 @@
 import React, { useState, useEffect } from "react";
 import { X, Edit2, Trash2 } from "lucide-react";
 
+
 const API = "http://localhost:3000/api/patient";
 
 const PatientForm = () => {
-    const [patients, setPatients] = useState([]);
-    const [editing, setEditing] = useState(null);
-    const [showForm, setShowForm] = useState(false); // To toggle form visibility like in Doctors
+  const [patients, setPatients] = useState([]);
+  const [editing, setEditing] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
-    const [formData, setFormData] = useState({
-        name: "",
-        age: "",
-        gender: "",
-        phone: "",
-        disease: "",
-        address: "",
+  const [formData, setFormData] = useState({
+    name: "",
+    age: "",
+    gender: "",
+    phone: "",
+    disease: "",
+    address: "",
+  });
+
+  //  Load Patients
+  const loadPatients = async () => {
+    try {
+      const res = await fetch(API);
+      const data = await res.json();
+      setPatients(data);
+    } catch (err) {
+      console.error("Error loading patients:", err);
+    }
+  };
+
+  useEffect(() => {
+    loadPatients();
+  }, []);
+
+  //  Input Change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  //  Add / Update Patient
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const method = editing ? "PUT" : "POST";
+    const url = editing ? `${API}/${editing._id}` : API;
+
+    try {
+      await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      resetForm();
+      loadPatients();
+    } catch (err) {
+      console.error("Error saving patient:", err);
+    }
+  };
+
+  //  Delete Patient
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this patient?")) return;
+
+    try {
+      await fetch(`${API}/${id}`, { method: "DELETE" });
+      loadPatients();
+    } catch (err) {
+      console.error("Error deleting patient:", err);
+    }
+  };
+
+  //  Edit Patient
+  const handleEdit = (p) => {
+    setEditing(p);
+    setFormData({
+      name: p.name || "",
+      age: p.age || "",
+      gender: p.gender || "",
+      phone: p.phone || "",
+      disease: p.disease || "",
+      address: p.address || "",
     });
+    setShowForm(true);
+  };
 
-    /* =============== GET ALL =============== */
-    const loadPatients = async () => {
-        try {
-            const res = await fetch(API);
-            const data = await res.json();
-            setPatients(data);
-        } catch (error) {
-            console.error("Error fetching patients:", error);
-        }
-    };
+  // 
+  const resetForm = () => {
+    setEditing(null);
+    setShowForm(false);
+    setFormData({
+      name: "",
+      age: "",
+      gender: "",
+      phone: "",
+      disease: "",
+      address: "",
+    });
+  };
 
-    useEffect(() => {
-        loadPatients();
-    }, []);
-
-    /* =============== INPUT CHANGE =============== */
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    /* =============== ADD / UPDATE =============== */
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            if (editing) {
-                // UPDATE
-                await fetch(`${API}/${editing._id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData),
-                });
-            } else {
-                // ADD
-                await fetch(API, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData),
-                });
-            }
-
-            handleCancel(); // Reset and close form
-            loadPatients();
-        } catch (error) {
-            console.error("Error saving patient:", error);
-        }
-    };
-
-    /* =============== DELETE =============== */
-    const handleDelete = async (id) => {
-        if (window.confirm("Are you sure you want to delete this patient?")) {
-            try {
-                await fetch(`${API}/${id}`, { method: "DELETE" });
-                loadPatients();
-            } catch (error) {
-                console.error("Error deleting patient:", error);
-            }
-        }
-    };
-
-    /* =============== EDIT CLICK =============== */
-    const handleEdit = (patient) => {
-        setEditing(patient);
-        setFormData(patient);
-        setShowForm(true);
-    };
-
-    /* =============== CANCEL =============== */
-    const handleCancel = () => {
-        setEditing(null);
-        setFormData({
-            name: "",
-            age: "",
-            gender: "",
-            phone: "",
-            disease: "",
-            address: "",
-        });
-        setShowForm(false);
-    };
 
     return (
         <div className="container main-content">
@@ -109,7 +111,7 @@ const PatientForm = () => {
                 )}
             </div>
 
-            {/* ========= FORM ========= */}
+            {/*  FORM  */}
             {showForm && (
                 <div className="card" style={{ marginBottom: "2rem" }}>
                     <div className="flex justify-between items-center mb-6">

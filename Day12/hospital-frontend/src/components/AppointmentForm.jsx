@@ -10,7 +10,6 @@ const AppointmentForm = () => {
     const [doctors, setDoctors] = useState([]);
     const [patients, setPatients] = useState([]);
     const [editing, setEditing] = useState(null);
-    const [showForm, setShowForm] = useState(false);
 
     const [formData, setFormData] = useState({
         doctor: "",
@@ -21,87 +20,87 @@ const AppointmentForm = () => {
         notes: "",
     });
 
-    /* ================= LOAD ALL DATA ================= */
-    const loadAll = async () => {
-        try {
-            const [aRes, dRes, pRes] = await Promise.all([
-                fetch(API),
-                fetch(DOCTOR_API),
-                fetch(PATIENT_API),
-            ]);
+    const [showForm, setShowForm] = useState(false);
 
-            setAppointments(await aRes.json());
-            setDoctors(await dRes.json());
-            setPatients(await pRes.json());
-        } catch (error) {
-            console.error("Error loading data:", error);
-        }
+    // Helper Functions
+    const getDoctorName = (id) => {
+        const doc = doctors.find(d => d._id === (id._id || id));
+        return doc ? doc.name : "Unknown Doctor";
+    };
+
+    const getPatientName = (id) => {
+        const pat = patients.find(p => p._id === (id._id || id));
+        return pat ? pat.name : "Unknown Patient";
+    };
+
+    const handleCancel = () => {
+        setShowForm(false);
+        resetForm();
+    };
+
+    //  Load Data
+    const loadData = async () => {
+        const [a, d, p] = await Promise.all([
+            fetch(API).then(res => res.json()),
+            fetch(DOCTOR_API).then(res => res.json()),
+            fetch(PATIENT_API).then(res => res.json()),
+        ]);
+
+        setAppointments(a);
+        setDoctors(d);
+        setPatients(p);
     };
 
     useEffect(() => {
-        loadAll();
+        loadData();
     }, []);
 
-    /* ================= INPUT CHANGE ================= */
+    //  Input Change
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    /* ================= ADD / UPDATE ================= */
+    //  Add / Update Appointment
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            if (editing) {
-                await fetch(`${API}/${editing._id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData),
-                });
-                setEditing(null);
-            } else {
-                await fetch(API, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData),
-                });
-            }
+        const method = editing ? "PUT" : "POST";
+        const url = editing ? `${API}/${editing._id}` : API;
 
-            handleCancel(); // Reset and close form
-            loadAll();
-        } catch (error) {
-            console.error("Error saving appointment:", error);
-        }
+        await fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+
+        resetForm();
+        loadData();
     };
 
-    /* ================= DELETE ================= */
+    //  Delete Appointment
     const handleDelete = async (id) => {
-        if (window.confirm("Are you sure you want to cancel this appointment?")) {
-            try {
-                await fetch(`${API}/${id}`, { method: "DELETE" });
-                loadAll();
-            } catch (error) {
-                console.error("Error deleting appointment:", error);
-            }
-        }
+        if (!window.confirm("Delete this appointment?")) return;
+
+        await fetch(`${API}/${id}`, { method: "DELETE" });
+        loadData();
     };
 
-    /* ================= EDIT ================= */
+    //  Edit Appointment
     const handleEdit = (a) => {
         setEditing(a);
         setFormData({
-            doctor: a.doctor?._id || a.doctor, // Handle populated or unpopulated
+            doctor: a.doctor?._id || a.doctor,
             patient: a.patient?._id || a.patient,
-            date: a.date ? a.date.slice(0, 10) : "",
+            date: a.date?.slice(0, 10),
             time: a.time,
             status: a.status,
-            notes: a.notes
+            notes: a.notes || "",
         });
         setShowForm(true);
     };
 
-    /* ================= CANCEL ================= */
-    const handleCancel = () => {
+
+    const resetForm = () => {
         setEditing(null);
         setFormData({
             doctor: "",
@@ -111,13 +110,7 @@ const AppointmentForm = () => {
             status: "Scheduled",
             notes: "",
         });
-        setShowForm(false);
     };
-
-    // Helper to get name from ID
-    const getDoctorName = (id) => doctors.find(d => d._id === id)?.name || "Unknown Doctor";
-    const getPatientName = (id) => patients.find(p => p._id === id)?.name || "Unknown Patient";
-
     return (
         <div className="container main-content">
             <div className="flex justify-between items-center mb-6">
@@ -129,7 +122,7 @@ const AppointmentForm = () => {
                 )}
             </div>
 
-            {/* ========= FORM ========= */}
+            {/*  FORM  */}
             {showForm && (
                 <div className="card" style={{ marginBottom: "2rem" }}>
                     <div className="flex justify-between items-center mb-6">
@@ -205,7 +198,7 @@ const AppointmentForm = () => {
                 </div>
             )}
 
-            {/* ========= LIST VIEW (Cards for better mobile view) ========= */}
+            {/*(Cards for better mobile view)  */}
             {!showForm && (
                 <div className="grid">
                     {appointments.map((a) => (

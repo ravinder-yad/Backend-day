@@ -4,6 +4,8 @@ import Doctors from "../pages/Doctors";
 import Patients from "../pages/Patients";
 import Appointments from "../pages/Appointments";
 import Navbar from "../components/Navbar";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 const AppRoutes = () => {
     return (
@@ -14,6 +16,8 @@ const AppRoutes = () => {
                 <Route path="/doctors" element={<Doctors />} />
                 <Route path="/patients" element={<Patients />} />
                 <Route path="/appointments" element={<Appointments />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
             </Routes>
         </BrowserRouter>
     );
