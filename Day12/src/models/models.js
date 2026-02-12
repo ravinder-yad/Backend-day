@@ -84,8 +84,29 @@ const appointmentSchema = new mongoose.Schema({
   },
 });
 
+// register
+const registerSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  confirm: {
+    type: String,
+  },
+});
+
 const Doctor = mongoose.model("Doctor", doctorSchema);
 const Patient = mongoose.model("Patient", patientSchema);
 const Appointment = mongoose.model("Appointment", appointmentSchema);
+const Register = mongoose.model("Register", registerSchema);
 
-module.exports = { Doctor, Patient, Appointment };
+module.exports = { Doctor, Patient, Appointment, Register };

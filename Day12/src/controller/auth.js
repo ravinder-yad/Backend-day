@@ -1,4 +1,7 @@
-const { Doctor, Patient, Appointment } = require("../models/models");
+const { Doctor, Patient, Appointment, Register } = require("../models/models");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 //post
 const addDoctor = async (req, res) => {
   try {
@@ -180,4 +183,76 @@ const updateAppointment = async (req, res) => {
   }
 };
 
-module.exports = { addDoctor,getDoctor,updateDoctor,deleteDoctor,addPatient, getPatient,deletePatient,updatePatient,addAppointment,getAppointment, deleteAppointment, updateAppointment,};
+// register 
+
+const registerUser = async (req, res) => {
+  try {
+    const { name, email, password, confirm } = req.body
+
+    const salt = 10;
+    // const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await Register.create({
+      name,
+      email,
+      password: hashedPassword,
+      confirm
+    });
+
+    const token = jwt.sign({ id: user._id }, "secret", { expiresIn: '1d' })
+
+    res.status(201).json({ user, token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error registering user" });
+  }
+};
+
+// login
+
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await Register.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const valid = await bcrypt.compare(password, user.password);
+
+    if (!valid) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    const token = jwt.sign({ id: user._id }, "secret", { expiresIn: '1d' });
+
+    res.status(201).json({ user, token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error logging in" });
+  }
+};
+
+
+
+
+const getStats = async (req, res) => {
+  try {
+    const totalDoctors = await Doctor.countDocuments();
+    const totalPatients = await Patient.countDocuments();
+    const totalAppointments = await Appointment.countDocuments();
+
+    res.status(200).json({
+      totalDoctors,
+      totalPatients,
+      totalAppointments
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error fetching stats" });
+  }
+};
+
+module.exports = { addDoctor, getDoctor, updateDoctor, deleteDoctor, addPatient, getPatient, deletePatient, updatePatient, addAppointment, getAppointment, deleteAppointment, updateAppointment, registerUser, loginUser, getStats };

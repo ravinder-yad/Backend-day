@@ -1,127 +1,100 @@
-import React, { useState } from 'react';
-import { Mail, Lock, User, UserPlus } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { User, Mail, Lock, UserPlus, ArrowRight, ShieldCheck } from "lucide-react";
 
 const Register = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    });
-    const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (formData.password !== formData.confirmPassword) {
-            alert("Passwords don't match!");
-            return;
-        }
-        console.log('Registration Data:', formData);
-
-        // Simulate successful registration
-        alert('Registration successful! Click OK to go to login.');
-        navigate('/login');
-    };
-
-    return (
-        <div className="container main-content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
-            <div className="card" style={{ maxWidth: '400px', width: '100%', padding: '2rem' }}>
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <div style={{ display: 'inline-flex', padding: '12px', background: '#e0e7ff', borderRadius: '50%', color: '#4f46e5', marginBottom: '1rem' }}>
-                        <UserPlus size={32} />
-                    </div>
-                    <h2>Create Account</h2>
-                    <p>Join our hospital management system</p>
-                </div>
-
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label className="label">Full Name</label>
-                        <div style={{ position: 'relative' }}>
-                            <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#6b7280' }} />
-                            <input
-                                type="text"
-                                name="name"
-                                className="input"
-                                style={{ paddingLeft: '40px' }}
-                                value={formData.name}
-                                onChange={handleChange}
-                                required
-                                placeholder="John Doe"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label className="label">Email Address</label>
-                        <div style={{ position: 'relative' }}>
-                            <Mail size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#6b7280' }} />
-                            <input
-                                type="email"
-                                name="email"
-                                className="input"
-                                style={{ paddingLeft: '40px' }}
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                                placeholder="name@example.com"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label className="label">Password</label>
-                        <div style={{ position: 'relative' }}>
-                            <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#6b7280' }} />
-                            <input
-                                type="password"
-                                name="password"
-                                className="input"
-                                style={{ paddingLeft: '40px' }}
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                                placeholder="••••••••"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label className="label">Confirm Password</label>
-                        <div style={{ position: 'relative' }}>
-                            <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#6b7280' }} />
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                className="input"
-                                style={{ paddingLeft: '40px' }}
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                required
-                                placeholder="••••••••"
-                            />
-                        </div>
-                    </div>
-
-                    <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem' }}>
-                        Create Account
-                    </button>
-                </form>
-
-                <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: '#6b7280' }}>
-                    Already have an account?
-                    <Link to="/login" style={{ color: '#4f46e5', textDecoration: 'none', fontWeight: 600, marginLeft: '5px' }}>
-                        Sign In
-                    </Link>
-                </div>
-            </div>
+  return (
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-6 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.1),transparent),radial-gradient(circle_at_bottom_left,rgba(236,72,153,0.1),transparent)]">
+      <div className="w-full max-w-md glass p-8 rounded-3xl animate-in fade-in slide-in-from-bottom-5 duration-500">
+        <div className="text-center mb-8">
+          <div className="inline-flex p-4 rounded-2xl bg-primary-600 text-white mb-4 shadow-xl shadow-primary-500/20">
+            <UserPlus size={32} />
+          </div>
+          <h1 className="text-3xl font-bold text-slate-900">Create Account</h1>
+          <p className="text-slate-500 mt-2">Join CarePulse family today</p>
         </div>
-    );
+
+        <form onSubmit={handleRegister} className="space-y-4">
+          <div className="relative group">
+            <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-600 transition-colors" size={20} />
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Full Name"
+              required
+              className="input-field pl-12"
+            />
+          </div>
+
+          <div className="relative group">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-600 transition-colors" size={20} />
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Email Address"
+              required
+              className="input-field pl-12"
+            />
+          </div>
+
+          <div className="relative group">
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-600 transition-colors" size={20} />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="Password"
+              required 
+              className="input-field pl-12"
+            />
+          </div>
+
+          <div className="relative group">
+            <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-600 transition-colors" size={20} />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              required
+              className="input-field pl-12"
+            />
+          </div>
+
+          <button type="submit" className="btn-primary w-full py-4 text-lg flex items-center justify-center gap-2 shadow-xl shadow-primary-500/20">
+            Create Account
+            <ArrowRight size={20} />
+          </button>
+        </form>
+
+        <p className="mt-8 text-center text-slate-500">
+          Already have an account?{" "}
+          <Link to="/login" className="text-primary-600 font-semibold hover:underline">
+            Login
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default Register;
