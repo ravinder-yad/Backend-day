@@ -6,7 +6,7 @@ function Register() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    paswood: ""
+    password: ""
   });
 
   const [message, setMessage] = useState("");
@@ -22,7 +22,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/register", {
+      await fetch("http://localhost:3000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -30,18 +30,17 @@ function Register() {
         body: JSON.stringify(formData)
       });
 
-      const result = await response.json();
+      setMessage("Registration Successful");
 
-      if (response.ok) {
-        setMessage("✅ Registration Successful!");
-      } else {
-        setMessage("❌ " + (result.message || "Registration Failed"));
-      }
-
+      setFormData({
+        name: "",
+        email: "",
+        password: ""
+      });
 
     } catch (error) {
       console.error(error);
-      setMessage(" Server Error");
+      setMessage("Server Error");
     }
   };
 
@@ -72,9 +71,9 @@ function Register() {
 
         <input
           type="password"
-          name="paswood"
+          name="password"
           placeholder="Password"
-          value={formData.paswood}
+          value={formData.password}
           onChange={handleChange}
           required
         />
@@ -84,6 +83,7 @@ function Register() {
       </form>
 
       <p>{message}</p>
+
       <p>
         Already have an account? <Link to="/login">Login here</Link>
       </p>

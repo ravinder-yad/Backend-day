@@ -3,6 +3,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import AddBook from './pages/AddBook';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 const PrivateRoute = ({ children }) => {
@@ -33,6 +35,7 @@ function App() {
           }
         />
       </Routes>
+      <ToastContainer />
     </Router>
   );
 }

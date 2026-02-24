@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -8,7 +9,6 @@ const Register = () => {
         email: '',
         password: '',
     });
-    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -33,15 +33,16 @@ const Register = () => {
             const response = await fetch("http://localhost:3000/api/register", requestOptions);
             const res = await response.json();
 
-            if (!response.ok) {
-                throw new Error(res.message || 'Registration failed');
+            if (response.ok) {
+                localStorage.setItem('token', res.token); // Assuming backend still returns token on success
+                localStorage.setItem('user', JSON.stringify(res)); // Assuming backend returns full object for register
+                toast.success('Registration successful! Please login.');
+                navigate('/login');
+            } else {
+                toast.error(res.message || 'Registration failed');
             }
-
-            localStorage.setItem('token', res.token);
-            localStorage.setItem('user', JSON.stringify(res)); // Backend returns full object for register
-            navigate('/');
-        } catch (err) {
-            setError(err.message || 'Registration failed');
+        } catch (error) {
+            toast.error('Registration error: ' + error.message);
         }
     };
 
@@ -54,15 +55,6 @@ const Register = () => {
                     <p className="auth-subtitle">Join our community of book lovers today</p>
                 </div>
 
-                {error && (
-                    <div style={{
-                        background: '#fee2e2', color: '#991b1b', padding: '0.75rem',
-                        borderRadius: '0.5rem', marginBottom: '1.5rem', textAlign: 'center',
-                        fontSize: '0.9rem', border: '1px solid #fecaca'
-                    }}>
-                        {error}
-                    </div>
-                )}
 
                 <form onSubmit={handleSubmit}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>

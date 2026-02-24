@@ -58,7 +58,7 @@ const loginUser = async (req, res) => {
       res.json({
         user: { _id: user.id, name: user.name, email: user.email },
         token: generateToken(user._id),
-        message: "Login successful"
+        message: "Login successful",
       });
     } else {
       res.status(400).json({ message: "Invalid credentials" });
@@ -69,19 +69,10 @@ const loginUser = async (req, res) => {
   }
 };
 
-
 const addProducts = async (req, res) => {
   try {
     // Destructure fields matching the user's Postman body
-    const { title, author, price, category, pages, description, inStock, coverImage } = req.body;
-
-    // Validate required fields
-    if (!title || !author || !price || !category) {
-      return res.status(400).json({ message: "Title, author, price, and category are required" });
-    }
-
-    const book = await Book.create({
-      user: req.user.id, 
+    const {
       title,
       author,
       price,
@@ -89,7 +80,26 @@ const addProducts = async (req, res) => {
       pages,
       description,
       inStock,
-      coverImage
+      coverImage,
+    } = req.body;
+
+    // Validate required fields
+    if (!title || !author || !price || !category) {
+      return res
+        .status(400)
+        .json({ message: "Title, author, price, and category are required" });
+    }
+
+    const book = await Book.create({
+      user: req.user.id,
+      title,
+      author,
+      price,
+      category,
+      pages,
+      description,
+      inStock,
+      coverImage,
     });
 
     res.status(201).json({
@@ -102,10 +112,8 @@ const addProducts = async (req, res) => {
   }
 };
 
-
 const getProducts = async (req, res) => {
   try {
-    // Only find books belonging to the logged-in user
     const books = await Book.find({ user: req.user.id });
     res.status(200).json({ books });
   } catch (error) {
@@ -113,7 +121,6 @@ const getProducts = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
-
 
 const searchProducts = async (req, res) => {
   try {
@@ -135,7 +142,6 @@ const searchProducts = async (req, res) => {
   }
 };
 
-
 const getOne = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
@@ -145,13 +151,15 @@ const getOne = async (req, res) => {
     }
 
     if (book.user.toString() !== req.user.id) {
-      return res.status(401).json({ message: "Not authorized to view this book" });
+      return res
+        .status(401)
+        .json({ message: "Not authorized to view this book" });
     }
 
     res.status(200).json({ book });
   } catch (error) {
     console.log(error);
-    if (error.name === 'CastError') {
+    if (error.name === "CastError") {
       return res.status(400).json({ message: "Invalid Book ID" });
     }
     res.status(500).json({ message: "Server Error" });
@@ -166,4 +174,3 @@ module.exports = {
   searchProducts,
   getOne,
 };
- 

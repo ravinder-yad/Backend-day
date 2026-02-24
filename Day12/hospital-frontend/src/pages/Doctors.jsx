@@ -18,7 +18,7 @@ const Doctors = () => {
             const response = await fetch("http://localhost:3000/api/doctor");
             const data = await response.json();
             setDoctors(data);
-        } catch (error) {
+        } catch (error) { 
             console.error("Error:", error);
         }
     };

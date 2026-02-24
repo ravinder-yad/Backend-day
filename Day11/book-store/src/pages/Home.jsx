@@ -31,8 +31,6 @@ const Home = () => {
 
             if (!response.ok) {
                 if (response.status === 401) {
-                    // Navigate to login if token expired/invalid
-                    // navigate('/login'); // Optional: redirect automatically
                     throw new Error("Please login to view books");
                 }
                 throw new Error(res.message || 'Failed to fetch books');

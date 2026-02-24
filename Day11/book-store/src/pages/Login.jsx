@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
-    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -31,15 +31,17 @@ const Login = () => {
             const response = await fetch("http://localhost:3000/api/login", requestOptions);
             const res = await response.json();
 
-            if (!response.ok) {
-                throw new Error(res.message || 'Login failed');
+            if (response.ok) {
+                toast.success('Login successful!');
+                localStorage.setItem('token', res.token);
+                localStorage.setItem('user', JSON.stringify(res.user));
+                navigate('/');
+            } else {
+                toast.error(res.message || 'Login failed');
             }
-
-            localStorage.setItem('token', res.token);
-            localStorage.setItem('user', JSON.stringify(res.user));
-            navigate('/');
-        } catch (err) {
-            setError(err.message || 'Invalid email or password');
+        } catch (error) {
+            console.error('Login error:', error);
+            toast.error('An error occurred during login');
         }
     };
 
@@ -52,15 +54,6 @@ const Login = () => {
                     <p className="auth-subtitle">Please enter your details to sign in</p>
                 </div>
 
-                {error && (
-                    <div style={{
-                        background: '#fee2e2', color: '#991b1b', padding: '0.75rem',
-                        borderRadius: '0.5rem', marginBottom: '1.5rem', textAlign: 'center',
-                        fontSize: '0.9rem', border: '1px solid #fecaca'
-                    }}>
-                        {error}
-                    </div>
-                )}
 
                 <form onSubmit={handleSubmit}>
                     <div className="modern-input-group">

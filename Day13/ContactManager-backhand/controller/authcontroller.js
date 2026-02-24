@@ -27,9 +27,9 @@ const getContactById = async (req, res) => {
     try {
         const { id } = req.params;
         const contact = await Contact.findById(id);
-        if (!contact) {
-            return res.status(404).json({ message: "Contact not found" });
-        }
+        // if (!contact) {
+        //     return res.status(404).json({ message: "Contact not found" });
+        // }
         res.status(200).json(contact);
     } catch (error) {
         console.log(error);
@@ -41,9 +41,9 @@ const updateContact = async (req, res) => {
     try {
         const { id } = req.params;
         const updatedContact = await Contact.findByIdAndUpdate(id, req.body, { new: true });
-        if (!updatedContact) {
-            return res.status(404).json({ message: "Contact not found" });
-        }
+        // if (!updatedContact) {
+        //     return res.status(404).json({ message: "Contact not found" });
+        // }
         res.status(200).json(updatedContact);
     } catch (error) {
         console.log(error);
@@ -55,9 +55,9 @@ const deleteContact = async (req, res) => {
     try {
         const { id } = req.params;
         const deletedContact = await Contact.findByIdAndDelete(id);
-        if (!deletedContact) {
-            return res.status(404).json({ message: "Contact not found" });
-        }
+        // if (!deletedContact) {
+        //     return res.status(404).json({ message: "Contact not found" });
+        // }
         res.status(200).json({ message: "Contact deleted successfully" });
     } catch (error) {
         console.log(error);
