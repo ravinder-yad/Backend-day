@@ -7,6 +7,7 @@ let server = http.createServer((req, res) => {
     res.end()
 })
 
+
 server.listen(8000, () => {
     console.log("http://localhost:8000");
 }) 

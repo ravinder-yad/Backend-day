@@ -1,0 +1,285 @@
+:root {
+  --bg: #f4f7f2;
+  --surface: #ffffff;
+  --text: #1b1f17;
+  --muted: #5f6b55;
+  --brand: #1f7a4f;
+  --brand-dark: #155334;
+  --danger: #b74040;
+  --radius: 14px;
+  --shadow: 0 12px 30px rgba(19, 30, 13, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at top right, #e5eedf, var(--bg));
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid #dce4d6;
+}
+
+.brand {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.nav-link.active,
+.nav-link:hover,
+.side-link.active,
+.side-link:hover {
+  color: var(--brand);
+}
+
+.inline-link {
+  text-decoration: none;
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--brand);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--brand-dark);
+}
+
+.btn-ghost {
+  background: #e4ecdd;
+  color: #283321;
+}
+
+.btn-danger {
+  background: #ffe3e3;
+  color: var(--danger);
+}
+
+.home-main {
+  padding: 40px 24px 60px;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.hero {
+  background: linear-gradient(135deg, #fdfefe, #eff6ea);
+  border: 1px solid #d5e0ce;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 48px;
+}
+
+.hero h1 {
+  margin: 10px 0;
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+}
+
+.eyebrow {
+  font-weight: 700;
+  color: var(--brand);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.feature-grid {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.feature-grid article {
+  background: var(--surface);
+  border: 1px solid #dde7d7;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.auth-main,
+.profile-main {
+  min-height: calc(100vh - 70px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.auth-card,
+.profile-card {
+  width: min(460px, 100%);
+  background: var(--surface);
+  padding: 28px;
+  border-radius: var(--radius);
+  border: 1px solid #dae4d4;
+  box-shadow: var(--shadow);
+}
+
+.auth-card,
+.profile-form {
+  display: grid;
+  gap: 10px;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid #cad7c2;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.sidebar {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid #dde7d6;
+  padding: 14px;
+  display: grid;
+  gap: 8px;
+  height: fit-content;
+}
+
+.side-link {
+  text-decoration: none;
+  color: var(--muted);
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.dashboard-content {
+  background: #f8fbf6;
+  border-radius: var(--radius);
+  padding: 18px;
+  border: 1px solid #dde6d7;
+}
+
+.section-head h2 {
+  margin: 0;
+}
+
+.section-head p {
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+.skill-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.skills-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.skill-card {
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid #dbe5d4;
+  padding: 16px;
+}
+
+.skill-card h3 {
+  margin: 6px 0;
+}
+
+.skill-category {
+  margin: 0;
+  color: var(--brand);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.skill-owner {
+  color: var(--muted);
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.error-text {
+  color: var(--danger);
+  font-weight: 600;
+  margin: 6px 0;
+}
+
+@media (max-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-form {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    padding: 28px;
+  }
+}

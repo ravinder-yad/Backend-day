@@ -1,0 +1,28 @@
+{
+  "registerUser1": {
+    "name": "Aman Sharma",
+    "email": "aman@example.com",
+    "password": "123456"
+  },
+  "registerUser2": {
+    "name": "Neha Gupta",
+    "email": "neha@example.com",
+    "password": "123456"
+  },
+  "login": {
+    "email": "aman@example.com",
+    "password": "123456"
+  },
+  "createSkill": {
+    "title": "React Development",
+    "category": "Web Development",
+    "description": "I can teach React basics to advanced concepts."
+  },
+  "createRequest": {
+    "skillId": "PUT_SKILL_ID_HERE",
+    "message": "I can teach Node.js in exchange."
+  },
+  "updateRequestStatus": {
+    "status": "accepted"
+  }
+}
