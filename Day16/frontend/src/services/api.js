@@ -35,4 +35,8 @@ export const api = {
   updateRequestStatus: (id, payload) =>
     request(`/requests/${id}/status`, { method: "PATCH", body: JSON.stringify(payload) }),
   myRequests: () => request("/requests/me"),
+  updateProfile: (payload) => request("/auth/profile", { method: "PATCH", body: JSON.stringify(payload) }),
+  getStats: () => request("/stats"),
+  getActivity: () => request("/stats/activity"),
+  getMyStats: () => request("/stats/me"),
 };

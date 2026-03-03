@@ -75,4 +75,38 @@ async function login(req, res) {
   }
 }
 
-module.exports = { register, login };
+async function updateProfile(req, res) {
+  try {
+    const { name, bio, skillsOffered, profileImage } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (name) user.name = name;
+    if (bio !== undefined) user.bio = bio;
+    if (profileImage !== undefined) user.profileImage = profileImage;
+    if (skillsOffered) {
+      user.skillsOffered = Array.isArray(skillsOffered) ? skillsOffered : skillsOffered.split(",").map((s) => s.trim());
+    }
+
+    await user.save();
+
+    return res.json({
+      message: "Profile updated successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        bio: user.bio,
+        skillsOffered: user.skillsOffered,
+        profileImage: user.profileImage,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Profile update failed", error: error.message });
+  }
+}
+
+module.exports = { register, login, updateProfile };

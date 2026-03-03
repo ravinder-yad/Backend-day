@@ -10,28 +10,22 @@ const authSchema = new mongoose.Schema({
     Email: {
         type: String,
         required: true,
-        unique: true,
-        trim: true,
-        lowercase: true
+        unique: true
     },
 
     Phone: {
         type: String,
-        required: true,
-        unique: true,
-        trim: true
+        required: true
     },
 
     Department: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
 
     Role: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
 
     JoiningDate: {
@@ -39,7 +33,7 @@ const authSchema = new mongoose.Schema({
         required: true
     }
 
-}, { timestamps: true });
+});
 
 
 const Auth = mongoose.model("Auth", authSchema);

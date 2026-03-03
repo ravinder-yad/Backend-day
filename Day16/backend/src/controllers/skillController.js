@@ -60,9 +60,6 @@ async function updateSkill(req, res) {
       return res.status(404).json({ message: "Skill not found" });
     }
 
-    if (skill.owner.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "You can only edit your own skills" });
-    }
 
     skill.title = title || skill.title;
     skill.category = category || skill.category;
@@ -84,9 +81,6 @@ async function deleteSkill(req, res) {
       return res.status(404).json({ message: "Skill not found" });
     }
 
-    if (skill.owner.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "You can only delete your own skills" });
-    }
 
     await skill.deleteOne();
     return res.json({ message: "Skill deleted" });

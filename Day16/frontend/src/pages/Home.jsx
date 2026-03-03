@@ -1,43 +1,53 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
     <div className="app-shell">
       <Navbar />
-      <main className="home-main">
-        <section className="hero">
-          <p className="eyebrow">Build Faster Through Skill Exchange</p>
-          <h1>Trade your skills. Learn from builders. Grow your career.</h1>
-          <p>
-            SkillSwap Hub lets developers, designers, and creators exchange real skills through requests,
-            collaboration, and verified profiles.
-          </p>
-          <div className="hero-actions">
-            <Link to="/register" className="btn btn-primary">
-              Get Started
-            </Link>
-            <Link to="/dashboard" className="btn btn-ghost">
-              Explore Skills
-            </Link>
-          </div>
-        </section>
-
-        <section className="feature-grid">
-          <article>
-            <h3>Smart Skill Listings</h3>
-            <p>Create and manage your skills with category and detailed description.</p>
-          </article>
-          <article>
-            <h3>Exchange Requests</h3>
-            <p>Send requests, track status, and accept or reject with a single click.</p>
-          </article>
-          <article>
-            <h3>Portfolio-Ready UI</h3>
-            <p>Responsive dashboard and profile pages designed for practical demos.</p>
-          </article>
-        </section>
+      <main className="hero">
+        <h1 style={{ marginBottom: "1rem" }}>
+          Master any skill through <span>Skill Exchange.</span>
+        </h1>
+        <p>
+          Join a global network of builders trading expertise. No money, just pure knowledge transfer.
+          Scale your craft by teaching what you know and learning what you don't.
+        </p>
+        <div className="hero-actions">
+          <Link to="/register" className="btn btn-primary">
+            Get Started Now
+          </Link>
+          <Link to="/login" className="btn btn-ghost">
+            Explore Registry
+          </Link>
+        </div>
       </main>
+
+      <section style={{ paddingBottom: "5rem" }}>
+        <div className="bento-grid">
+          <div className="glass-panel" style={{ gridColumn: "span 6", padding: "3rem" }}>
+            <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>Pure Exchange</h2>
+            <p style={{ color: "var(--text-dim)", lineHeight: "1.7" }}>
+              Our platform operates on direct value exchange. Connect with developers, designers,
+              and founders who want to trade their mastery for yours.
+            </p>
+          </div>
+          <div className="glass-panel" style={{ gridColumn: "span 6", padding: "3rem" }}>
+            <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>Verified Growth</h2>
+            <p style={{ color: "var(--text-dim)", lineHeight: "1.7" }}>
+              Every swap builds your reputation. Grow your professional network while acquiring
+              high-demand skills through hands-on collaboration.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
