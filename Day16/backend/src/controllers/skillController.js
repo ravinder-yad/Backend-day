@@ -2,7 +2,7 @@ const Skill = require("../models/Skill");
 
 async function getSkills(req, res) {
   try {
-    const { search = "", category = "" } = req.query;
+    const { search = "", category = "", mine = "false" } = req.query;
 
     const query = {};
     if (search) {
@@ -10,6 +10,11 @@ async function getSkills(req, res) {
     }
     if (category) {
       query.category = category;
+    }
+
+    // Data Isolation: If 'mine' is true, only show current user's skills
+    if (mine === "true" && req.user) {
+      query.owner = req.user._id;
     }
 
     const skills = await Skill.find(query).populate("owner", "name email").sort({ createdAt: -1 });
@@ -60,6 +65,10 @@ async function updateSkill(req, res) {
       return res.status(404).json({ message: "Skill not found" });
     }
 
+    // Security Check: Only Owner can update
+    if (skill.owner.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Forbidden: You only edit your own skills" });
+    }
 
     skill.title = title || skill.title;
     skill.category = category || skill.category;
@@ -81,6 +90,10 @@ async function deleteSkill(req, res) {
       return res.status(404).json({ message: "Skill not found" });
     }
 
+    // Security Check: Only Owner can delete
+    if (skill.owner.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Forbidden: You only delete your own skills" });
+    }
 
     await skill.deleteOne();
     return res.json({ message: "Skill deleted" });
