@@ -38,100 +38,121 @@ function MySwaps() {
     const sentRequests = requests.filter(r => r.sender._id === user?._id);
 
     return (
-        <div className="app-shell">
+        <div className="app-shell" style={{ background: "var(--bg-secondary)" }}>
             <Navbar />
-            <main className="dashboard-v2">
+            <main className="dashboard-v2" style={{ paddingTop: "9rem" }}>
                 <Sidebar />
-                <section style={{ padding: "3rem 0", background: "#fcfcfc", overflowY: "auto" }}>
-                    <header style={{ padding: "0 8%", marginBottom: "4rem" }}>
-                        <h1 style={{ fontSize: "3.5rem", fontWeight: "950", marginBottom: "0.6rem", color: "var(--text-main)" }}>My Swaps</h1>
-                        <p style={{ color: "var(--text-dim)", fontSize: "1.2rem", fontWeight: "500" }}>
-                            Track and manage your skill exchange conversations.
-                        </p>
+                <section style={{ padding: "4rem 0", overflowY: "auto" }}>
+                    <header style={{ padding: "0 8%", marginBottom: "5rem" }}>
+                        <div className="live-indicator" style={{ display: "inline-flex", marginBottom: "1.2rem", padding: "0.5rem 1.2rem", fontSize: "0.75rem" }}>
+                            <span className="pulse-dot"></span> ACTIVE NEGOTIATIONS
+                        </div>
+                        <h1 style={{ fontSize: "4.5rem", fontWeight: "950", color: "var(--text-main)", letterSpacing: "-0.04em" }}>My Swaps</h1>
+                        <p style={{ color: "var(--text-dim)", fontSize: "1.2rem", fontWeight: "500" }}>Manage your collaborative knowledge exchanges.</p>
                     </header>
 
                     <div style={{ padding: "0 8%" }}>
-                        {/* Received Requests */}
-                        <h2 style={{ fontSize: "1.8rem", fontWeight: "900", marginBottom: "2rem", display: "flex", alignItems: "center", gap: "1rem" }}>
-                            Incoming Requests <span style={{ fontSize: "1rem", color: "var(--accent)", background: "var(--accent-glow)", padding: "0.2rem 0.8rem", borderRadius: "100px" }}>{receivedRequests.length}</span>
-                        </h2>
+                        {/* Incoming Section */}
+                        <div style={{ marginBottom: "7rem" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3rem" }}>
+                                <h2 style={{ fontSize: "2.2rem", fontWeight: "950", letterSpacing: "-0.02em" }}>Incoming Requests</h2>
+                                <div style={{ fontSize: "0.85rem", fontWeight: "900", color: "var(--accent)", background: "var(--accent-glow)", padding: "0.5rem 1.5rem", borderRadius: "14px", border: "1px solid rgba(16, 185, 129, 0.1)" }}>
+                                    {receivedRequests.length} PENDING
+                                </div>
+                            </div>
 
-                        <div style={{ display: "grid", gap: "1.5rem", marginBottom: "5rem" }}>
-                            {receivedRequests.length > 0 ? (
-                                receivedRequests.map(req => (
-                                    <div key={req._id} className="glass-panel" style={{ padding: "2rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                        <div>
-                                            <h4 style={{ fontSize: "1.2rem", fontWeight: "800", marginBottom: "0.4rem" }}>{req.skill?.title || "Unknown Skill"}</h4>
-                                            <p style={{ color: "var(--text-dim)", fontSize: "0.95rem" }}>
-                                                From <span style={{ fontWeight: "700", color: "var(--text-main)" }}>{req.sender.name}</span>
-                                            </p>
-                                            {req.message && (
-                                                <p style={{ marginTop: "1rem", fontStyle: "italic", color: "var(--text-dim)", borderLeft: "3px solid var(--accent)", paddingLeft: "1rem" }}>
-                                                    "{req.message}"
-                                                </p>
-                                            )}
-                                        </div>
+                            <div style={{ display: "grid", gap: "2rem" }}>
+                                {receivedRequests.length > 0 ? (
+                                    receivedRequests.map(req => (
+                                        <div key={req._id} className="glass-panel" style={{ padding: "3rem", display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid rgba(16, 185, 129, 0.1)" }}>
+                                            <div style={{ display: "flex", gap: "2.5rem", alignItems: "center" }}>
+                                                <div style={{ width: "60px", height: "60px", borderRadius: "18px", background: "#fff", display: "grid", placeItems: "center", fontSize: "1.5rem", boxShadow: "var(--shadow-crystal)", fontWeight: "950", color: "var(--accent)" }}>
+                                                    {req.sender.name[0]}
+                                                </div>
+                                                <div>
+                                                    <p style={{ fontSize: "0.7rem", fontWeight: "900", color: "var(--text-dim)", textTransform: "uppercase", marginBottom: "0.4rem", letterSpacing: "0.1em" }}>Request From {req.sender.name}</p>
+                                                    <h4 style={{ fontSize: "1.6rem", fontWeight: "900", color: "var(--text-main)", letterSpacing: "-0.01em" }}>{req.skill?.title || "Expert Exchange"}</h4>
+                                                    {req.message && (
+                                                        <div style={{ marginTop: "1.5rem", padding: "1rem 1.5rem", background: "#f8fafc", borderRadius: "14px", borderLeft: "4px solid var(--accent)", fontSize: "0.95rem", color: "var(--text-dim)", fontWeight: "500" }}>
+                                                            {req.message}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
 
-                                        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-                                            {req.status === "pending" ? (
-                                                <>
-                                                    <button onClick={() => handleStatusUpdate(req._id, "accepted")} className="btn btn-primary" style={{ padding: "0.6rem 2rem" }}>Accept</button>
-                                                    <button onClick={() => handleStatusUpdate(req._id, "rejected")} className="btn" style={{ background: "#fef2f2", color: "#dc2626", border: "1px solid #fee2e2", padding: "0.6rem 2rem" }}>Reject</button>
-                                                </>
-                                            ) : (
-                                                <span style={{
-                                                    fontWeight: "800",
-                                                    textTransform: "uppercase",
-                                                    fontSize: "0.8rem",
-                                                    color: req.status === "accepted" ? "var(--accent)" : "#dc2626",
-                                                    background: req.status === "accepted" ? "var(--accent-glow)" : "#fef2f2",
-                                                    padding: "0.4rem 1rem",
-                                                    borderRadius: "100px"
-                                                }}>
-                                                    {req.status}
-                                                </span>
-                                            )}
+                                            <div style={{ display: "flex", gap: "1rem" }}>
+                                                {req.status === "pending" ? (
+                                                    <>
+                                                        <button onClick={() => handleStatusUpdate(req._id, "accepted")} className="btn btn-primary" style={{ padding: "0.9rem 2.5rem", borderRadius: "14px" }}>Accept Swap</button>
+                                                        <button onClick={() => handleStatusUpdate(req._id, "rejected")} className="btn" style={{ background: "#fff", color: "#ef4444", border: "1px solid #fee2e2", padding: "0.9rem 2.5rem", borderRadius: "14px", fontWeight: "800" }}>Decline</button>
+                                                    </>
+                                                ) : (
+                                                    <div style={{
+                                                        padding: "0.8rem 1.8rem",
+                                                        borderRadius: "14px",
+                                                        background: req.status === "accepted" ? "var(--accent-glow)" : "#fff5f5",
+                                                        color: req.status === "accepted" ? "var(--accent)" : "#ef4444",
+                                                        fontWeight: "900",
+                                                        fontSize: "0.75rem",
+                                                        textTransform: "uppercase",
+                                                        letterSpacing: "0.1em",
+                                                        border: req.status === "accepted" ? "1px solid rgba(16, 185, 129, 0.1)" : "1px solid #fee2e2"
+                                                    }}>
+                                                        {req.status}
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
+                                    ))
+                                ) : (
+                                    <div className="glass-panel" style={{ padding: "5rem", textAlign: "center", background: "transparent", border: "1px dashed var(--glass-border)" }}>
+                                        <p style={{ color: "var(--text-dim)", fontSize: "1.1rem", fontWeight: "600" }}>Registry is quiet. No incoming transmissions detected.</p>
                                     </div>
-                                ))
-                            ) : (
-                                <p style={{ color: "var(--text-dim)", textAlign: "center", padding: "3rem", background: "#f8fafc", borderRadius: "24px", border: "1px dashed #e2e8f0" }}>No incoming requests yet.</p>
-                            )}
+                                )}
+                            </div>
                         </div>
 
-                        {/* Sent Requests */}
-                        <h2 style={{ fontSize: "1.8rem", fontWeight: "900", marginBottom: "2rem", display: "flex", alignItems: "center", gap: "1rem" }}>
-                            Sent Requests <span style={{ fontSize: "1rem", color: "var(--text-dim)", background: "#f1f5f9", padding: "0.2rem 0.8rem", borderRadius: "100px" }}>{sentRequests.length}</span>
-                        </h2>
+                        {/* Outgoing Section */}
+                        <div>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3rem" }}>
+                                <h2 style={{ fontSize: "2.2rem", fontWeight: "950", letterSpacing: "-0.02em" }}>Sent Inquiries</h2>
+                                <div style={{ fontSize: "0.85rem", fontWeight: "900", color: "var(--text-dim)", background: "rgba(241, 245, 249, 0.6)", padding: "0.5rem 1.5rem", borderRadius: "14px", border: "1px solid var(--glass-border)" }}>
+                                    {sentRequests.length} TOTAL INITIATED
+                                </div>
+                            </div>
 
-                        <div style={{ display: "grid", gap: "1.5rem" }}>
-                            {sentRequests.length > 0 ? (
-                                sentRequests.map(req => (
-                                    <div key={req._id} className="glass-panel" style={{ padding: "2rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                        <div>
-                                            <h4 style={{ fontSize: "1.2rem", fontWeight: "800", marginBottom: "0.4rem" }}>{req.skill?.title || "Unknown Skill"}</h4>
-                                            <p style={{ color: "var(--text-dim)", fontSize: "0.95rem" }}>
-                                                Sent to <span style={{ fontWeight: "700", color: "var(--text-main)" }}>{req.receiver.name}</span>
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <span style={{
-                                                fontWeight: "800",
+                            <div style={{ display: "grid", gap: "1.5rem" }}>
+                                {sentRequests.length > 0 ? (
+                                    sentRequests.map(req => (
+                                        <div key={req._id} className="glass-panel" style={{ padding: "2.5rem 3rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                            <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+                                                <div style={{ width: "50px", height: "50px", borderRadius: "16px", background: "#f8fafc", border: "1px solid var(--glass-border)", display: "grid", placeItems: "center", fontSize: "1.2rem" }}>🛰️</div>
+                                                <div>
+                                                    <p style={{ fontSize: "0.65rem", fontWeight: "900", color: "var(--text-dim)", textTransform: "uppercase", marginBottom: "0.2rem", letterSpacing: "0.1em" }}>Sent to {req.receiver.name}</p>
+                                                    <h4 style={{ fontSize: "1.4rem", fontWeight: "850", color: "var(--text-main)" }}>{req.skill?.title || "Mastery Exchange"}</h4>
+                                                </div>
+                                            </div>
+                                            <div style={{
+                                                padding: "0.7rem 1.5rem",
+                                                borderRadius: "12px",
+                                                background: req.status === "pending" ? "#fffbeb" : (req.status === "accepted" ? "var(--accent-glow)" : "#fff5f5"),
+                                                color: req.status === "pending" ? "#d97706" : (req.status === "accepted" ? "var(--accent)" : "#ef4444"),
+                                                fontWeight: "900",
+                                                fontSize: "0.7rem",
                                                 textTransform: "uppercase",
-                                                fontSize: "0.8rem",
-                                                color: req.status === "pending" ? "#eab308" : (req.status === "accepted" ? "var(--accent)" : "#dc2626"),
-                                                background: req.status === "pending" ? "#fef9c3" : (req.status === "accepted" ? "var(--accent-glow)" : "#fef2f2"),
-                                                padding: "0.4rem 1rem",
-                                                borderRadius: "100px"
+                                                letterSpacing: "0.1em",
+                                                border: "1px solid rgba(0,0,0,0.02)"
                                             }}>
                                                 {req.status}
-                                            </span>
+                                            </div>
                                         </div>
+                                    ))
+                                ) : (
+                                    <div className="glass-panel" style={{ padding: "4rem", textAlign: "center", background: "transparent", border: "1px dashed var(--glass-border)" }}>
+                                        <p style={{ color: "var(--text-dim)", fontSize: "1rem", fontWeight: "600" }}>Start your first swap by exploring the marketplace.</p>
                                     </div>
-                                ))
-                            ) : (
-                                <p style={{ color: "var(--text-dim)", textAlign: "center", padding: "3rem", background: "#f8fafc", borderRadius: "24px", border: "1px dashed #e2e8f0" }}>You haven't sent any requests yet.</p>
-                            )}
+                                )}
+                            </div>
                         </div>
                     </div>
                 </section>

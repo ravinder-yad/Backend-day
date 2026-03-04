@@ -2,148 +2,141 @@ import { useAuth } from "../context/AuthContext";
 
 function SkillCard({ skill, onRequest, onEdit, onDelete }) {
   const { user } = useAuth();
-
   const userId = user?._id?.toString();
-  const skillOwnerId = skill.owner?.toString();
+  const skillOwnerId = (skill.owner?._id || skill.owner)?.toString();
   const isOwner = userId && skillOwnerId && userId === skillOwnerId;
 
-  const avatarLetter = (skill.ownerName || "U").charAt(0).toUpperCase();
-
   return (
-    <div className={`skill-card-v2 ${isOwner ? 'owner-card' : ''}`} style={{
+    <div className="glass-panel" style={{
+      padding: "2.5rem",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "space-between",
-      padding: "2.2rem",
-      background: "#ffffff",
-      border: "1px solid #f1f5f9",
-      borderRadius: "32px",
-      boxShadow: "0 10px 25px -5px rgba(0,0,0,0.03)",
-      transition: "var(--transition-smooth)",
+      gap: "1.5rem",
       position: "relative",
-      minHeight: "400px"
+      overflow: "visible",
+      minHeight: "420px",
+      background: "var(--bg-card)",
+      border: isOwner ? "1.5px solid var(--accent)" : "1px solid var(--glass-border)"
     }}>
-      {/* Top Section: Avatar & Category */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-        <div style={{
-          width: "48px",
-          height: "48px",
-          background: isOwner ? "var(--accent)" : "#f8fafc",
-          borderRadius: "16px",
-          display: "grid",
-          placeItems: "center",
-          fontSize: "1.2rem",
-          fontWeight: "900",
-          color: isOwner ? "#fff" : "var(--accent)",
-          boxShadow: isOwner ? "0 8px 16px -4px var(--accent-glow)" : "none",
-          border: isOwner ? "none" : "1px solid #e2e8f0"
-        }}>
-          {avatarLetter}
-        </div>
-        <span style={{
-          background: "var(--accent-glow)",
-          color: "var(--accent)",
-          padding: "0.5rem 1rem",
-          borderRadius: "100px",
-          fontSize: "0.7rem",
-          fontWeight: "850",
-          textTransform: "uppercase",
-          letterSpacing: "0.05em",
-          border: "1px solid rgba(16, 185, 129, 0.1)"
-        }}>
-          {skill.category}
-        </span>
+      {/* Category Tag Float */}
+      <div style={{
+        position: "absolute",
+        top: "-15px",
+        right: "30px",
+        background: "linear-gradient(135deg, var(--accent), #0ea171)",
+        color: "#fff",
+        padding: "0.5rem 1.2rem",
+        borderRadius: "14px",
+        fontSize: "0.75rem",
+        fontWeight: "900",
+        boxShadow: "0 10px 20px -5px var(--accent-glow)",
+        zIndex: "10",
+        textTransform: "uppercase",
+        letterSpacing: "0.05em"
+      }}>
+        {skill.category}
       </div>
 
-      {/* Content Section */}
-      <div style={{ flexGrow: 1 }}>
-        <h3 style={{
-          fontSize: "1.6rem",
-          fontWeight: "900",
-          color: "var(--text-main)",
-          marginBottom: "0.8rem",
-          lineHeight: "1.2"
+      {/* Header: Avatar & Title */}
+      <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", marginBottom: "0.5rem" }}>
+        <div style={{
+          width: "60px",
+          height: "60px",
+          fontSize: "1.5rem",
+          borderRadius: "20px",
+          background: isOwner ? "var(--accent)" : "#fff",
+          display: "grid",
+          placeItems: "center",
+          boxShadow: "var(--shadow-crystal)",
+          border: "1px solid var(--glass-border)",
+          fontWeight: "950",
+          color: isOwner ? "#fff" : "var(--accent)"
         }}>
-          {skill.title}
-        </h3>
+          {skill.owner?.name?.[0] || skill.ownerName?.[0] || "S"}
+        </div>
+        <div>
+          <h4 style={{
+            fontSize: "1.3rem",
+            fontWeight: "950",
+            color: "var(--text-main)",
+            letterSpacing: "-0.03em",
+            marginBottom: "0.2rem",
+            lineHeight: "1.1"
+          }}>
+            {skill.title}
+          </h4>
+          <p style={{
+            color: "var(--text-dim)",
+            fontSize: "0.85rem",
+            fontWeight: "700",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem"
+          }}>
+            <span style={{ color: "var(--accent)" }}>●</span> {isOwner ? "You (Owner)" : (skill.ownerName || "Builder")}
+          </p>
+        </div>
+      </div>
+
+      {/* Description Box (Glass-on-Glass) */}
+      <div style={{
+        background: "rgba(248, 250, 252, 0.4)",
+        border: "1px solid var(--glass-border)",
+        padding: "1.5rem",
+        borderRadius: "20px",
+        flexGrow: 1,
+        display: "flex",
+        alignItems: "center"
+      }}>
         <p style={{
           color: "var(--text-dim)",
           fontSize: "0.95rem",
           lineHeight: "1.6",
-          marginBottom: "2rem"
+          fontWeight: "500",
+          margin: 0
         }}>
-          {skill.description}
+          {skill.description || "Expert-level skill in high-demand domain. Connect to discuss exchange details and project scope."}
         </p>
       </div>
 
-      {/* Footer / Action Section */}
-      <div style={{ marginTop: "auto" }}>
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.8rem",
-          marginBottom: "1.5rem",
-          padding: "0.8rem 1rem",
-          background: "#f8fafc",
-          borderRadius: "16px",
-          border: "1px solid #f1f5f9"
-        }}>
-          <span style={{ fontSize: "0.8rem", color: "var(--text-dim)", fontWeight: "600" }}>By</span>
-          <span style={{ fontSize: "0.85rem", fontWeight: "800", color: "var(--text-main)" }}>
-            {isOwner ? "You (Owner)" : (skill.ownerName || "Builder")}
-          </span>
-        </div>
+      {/* Action Section */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1.5rem" }}>
 
-        {/* Global Action Bar */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+        {/* Only show Edit/Delete if isOwner is true */}
+        {isOwner ? (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.8rem" }}>
             <button
               onClick={() => onEdit(skill)}
               className="btn btn-ghost"
-              style={{
-                padding: "0.7rem",
-                fontSize: "0.85rem",
-                justifyContent: "center",
-                borderColor: "#e2e8f0",
-                background: "#fff",
-                borderRadius: "16px"
-              }}
+              style={{ borderRadius: "15px", padding: "0.8rem", fontSize: "0.85rem", width: "100%", background: "#fff" }}
             >
-              <span style={{ marginRight: "0.4rem" }}>✏️</span> Edit
+              ✏️ Edit
             </button>
             <button
               onClick={() => onDelete(skill._id)}
               className="btn"
               style={{
-                padding: "0.7rem",
+                borderRadius: "15px",
+                padding: "0.8rem",
                 fontSize: "0.85rem",
-                justifyContent: "center",
                 background: "#fff5f5",
-                color: "#e03131",
-                border: "1px solid #ffe3e3",
-                borderRadius: "16px"
+                color: "#ef4444",
+                border: "1px solid #fee2e2",
+                width: "100%"
               }}
             >
-              <span style={{ marginRight: "0.4rem" }}>🗑️</span> Delete
+              🗑️ Delete
             </button>
           </div>
-
-          {!isOwner && (
-            <button
-              onClick={() => onRequest(skill)}
-              className="btn btn-primary"
-              style={{
-                width: "100%",
-                justifyContent: "center",
-                padding: "1rem",
-                borderRadius: "16px",
-                fontSize: "0.95rem"
-              }}
-            >
-              Connect & Swap
-            </button>
-          )}
-        </div>
+        ) : (
+          <button
+            onClick={() => onRequest(skill)}
+            className="btn btn-primary"
+            style={{ width: "100%", borderRadius: "18px", padding: "1.1rem" }}
+          >
+            Send Swap Request 🤝
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,41 +1,63 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+const API_URL = "http://localhost:5000/api";
 
-async function request(path, options = {}) {
-  const token = localStorage.getItem("skillswap_token");
-  const headers = {
-    "Content-Type": "application/json",
-    ...(options.headers || {}),
-  };
+const getAuthHeader = () => {
+  const token = localStorage.getItem("token");
+  return token ? { "Authorization": `Bearer ${token}` } : {};
+};
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+const request = async (url, method = "GET", data = null, params = {}) => {
+  try {
+    // Construct URL with query params for fetch
+    let fullUrl = `${API_URL}${url}`;
+    const query = new URLSearchParams(params).toString();
+    if (query) {
+      fullUrl += `?${query}`;
+    }
+
+    const options = {
+      method,
+      headers: {
+        ...getAuthHeader(),
+        "Content-Type": "application/json",
+      },
+    };
+
+    if (data && (method === "POST" || method === "PUT")) {
+      options.body = JSON.stringify(data);
+    }
+
+    const response = await fetch(fullUrl, options);
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw result || { message: "Request failed" };
+    }
+
+    return result;
+  } catch (error) {
+    console.error("API error:", error);
+    throw error;
   }
-
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers,
-  });
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.message || "Something went wrong");
-  }
-
-  return data;
-}
+};
 
 export const api = {
-  register: (payload) => request("/auth/register", { method: "POST", body: JSON.stringify(payload) }),
-  login: (payload) => request("/auth/login", { method: "POST", body: JSON.stringify(payload) }),
-  getSkills: () => request("/skills"),
-  createSkill: (payload) => request("/skills", { method: "POST", body: JSON.stringify(payload) }),
-  updateSkill: (id, payload) => request(`/skills/${id}`, { method: "PUT", body: JSON.stringify(payload) }),
-  deleteSkill: (id) => request(`/skills/${id}`, { method: "DELETE" }),
-  createRequest: (payload) => request("/requests", { method: "POST", body: JSON.stringify(payload) }),
-  updateRequestStatus: (id, payload) =>
-    request(`/requests/${id}/status`, { method: "PATCH", body: JSON.stringify(payload) }),
-  myRequests: () => request("/requests/me"),
-  updateProfile: (payload) => request("/auth/profile", { method: "PATCH", body: JSON.stringify(payload) }),
+  // Auth
+  login: (data) => request("/auth/login", "POST", data),
+  register: (data) => request("/auth/register", "POST", data),
+  updateProfile: (data) => request("/auth/profile", "PUT", data),
+
+  // Skills
+  getSkills: (params) => request("/skills", "GET", null, params),
+  createSkill: (data) => request("/skills", "POST", data),
+  updateSkill: (id, data) => request(`/skills/${id}`, "PUT", data),
+  deleteSkill: (id) => request(`/skills/${id}`, "DELETE"),
+
+  // Requests
+  createRequest: (data) => request("/requests", "POST", data),
+  myRequests: () => request("/requests/my"),
+  updateRequestStatus: (id, data) => request(`/requests/${id}`, "PUT", data),
+
+  // Stats & Activity
   getStats: () => request("/stats"),
   getActivity: () => request("/stats/activity"),
   getMyStats: () => request("/stats/me"),

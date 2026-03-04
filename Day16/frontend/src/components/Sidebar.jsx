@@ -40,18 +40,19 @@ function Sidebar() {
         </NavLink>
       </div>
 
-      <div style={{ padding: "1.8rem", marginTop: "4rem", borderRadius: "24px", background: "#f8fafc", border: "1px solid #f1f5f9" }}>
-        <p style={{ fontSize: "0.9rem", fontWeight: "750", marginBottom: "0.4rem", color: "var(--text-main)" }}>
+      <div style={{ padding: "2.2rem", marginTop: "4rem", borderRadius: "32px", background: "#fff", border: "1px solid var(--glass-border)", boxShadow: "var(--shadow-crystal)", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: 0, right: 0, width: "60px", height: "60px", background: "var(--accent-glow)", filter: "blur(20px)", borderRadius: "50%", opacity: 0.5 }}></div>
+        <p style={{ fontSize: "0.95rem", fontWeight: "950", marginBottom: "0.5rem", color: "var(--text-main)", letterSpacing: "-0.02em" }}>
           {stats.levelName}
         </p>
-        <p style={{ fontSize: "0.7rem", color: "var(--text-dim)", marginBottom: "0.8rem", fontWeight: "600", textTransform: "uppercase" }}>
-          Skill Level
+        <p style={{ fontSize: "0.7rem", color: "var(--text-dim)", marginBottom: "1.2rem", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+          Builder Rank
         </p>
-        <div style={{ height: "8px", width: "100%", background: "#e2e8f0", borderRadius: "10px", overflow: "hidden" }}>
-          <div style={{ height: "100%", width: stats.progress, background: "var(--accent)", borderRadius: "10px", transition: "width 1s ease-in-out" }}></div>
+        <div style={{ height: "10px", width: "100%", background: "rgba(16, 185, 129, 0.05)", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(16, 185, 129, 0.05)" }}>
+          <div style={{ height: "100%", width: stats.progress, background: "linear-gradient(90deg, var(--accent), #34d399)", borderRadius: "10px", transition: "width 1.5s cubic-bezier(0.16, 1, 0.3, 1)" }}></div>
         </div>
-        <p style={{ fontSize: "0.75rem", color: "var(--text-dim)", marginTop: "1rem", lineHeight: "1.5" }}>
-          Post more skills and complete swaps to increase your builder level!
+        <p style={{ fontSize: "0.8rem", color: "var(--text-dim)", marginTop: "1.5rem", lineHeight: "1.6", fontWeight: "600" }}>
+          Post quality listings to climb the registry hierarchy.
         </p>
       </div>
     </aside>
