@@ -1,0 +1,145 @@
+/* Background */
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Card */
+.register-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+}
+
+/* Content */
+.register-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Brand */
+.register-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  background: white;
+  color: #2563eb;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.brand-name {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Heading */
+.register-head h1 {
+  color: white;
+  font-size: 26px;
+  margin: 10px 0 5px;
+}
+
+.register-head p {
+  color: #dbeafe;
+  font-size: 14px;
+}
+
+/* Form */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.register-form label {
+  color: white;
+  font-size: 14px;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+/* Password */
+.password-box {
+  display: flex;
+}
+
+.password-box input {
+  flex: 1;
+  border-radius: 10px 0 0 10px;
+}
+
+.password-box button {
+  padding: 0 15px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 0 10px 10px 0;
+  cursor: pointer;
+}
+
+/* Terms */
+.terms {
+  font-size: 13px;
+  color: white;
+}
+
+/* Button */
+.register-btn {
+  padding: 12px;
+  background: white;
+  color: #2563eb;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.register-btn:hover {
+  background: #dbeafe;
+}
+
+/* Bottom */
+.bottom-text {
+  text-align: center;
+  color: white;
+  font-size: 14px;
+}
+
+.bottom-text a {
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .register-card {
+    padding: 20px;
+  }
+
+  .register-head h1 {
+    font-size: 22px;
+  }
+}

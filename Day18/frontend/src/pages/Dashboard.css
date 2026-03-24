@@ -1,0 +1,131 @@
+.dashboard-page {
+  background-color: #f4f6f9;
+  min-height: calc(100vh - 70px);
+}
+
+/* Header greeting */
+.dashboard-header {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  padding-bottom: 5rem !important; /* create space for cards to overlap */
+}
+
+.greeting-text {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.user-name {
+  font-size: 2.2rem;
+  letter-spacing: -0.5px;
+}
+
+/* Pull the grid up over the header */
+.mt-neg-4 {
+  margin-top: -3.5rem;
+}
+
+/* Stats Cards */
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.stat-title {
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+/* Colored Accents on Stats */
+.total-card .stat-number { color: #212529; }
+.success-card .stat-number { color: #198754; }
+.warning-card .stat-number { color: #ffc107; }
+.info-card .stat-number { color: #0dcaf0; }
+
+/* Section Titles */
+.section-title {
+  font-weight: 700;
+  color: #212529;
+  letter-spacing: -0.5px;
+}
+
+/* Recent Tasks List */
+.recent-task-item {
+  background-color: #fafbfc;
+  transition: background-color 0.2s;
+  border-color: #f0f2f5 !important;
+}
+
+.recent-task-item:hover {
+  background-color: #f1f3f5;
+}
+
+/* Status dots */
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.status-dot.pending { background-color: #ffc107; box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2); }
+.status-dot.in-progress { background-color: #0dcaf0; box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.2); }
+.status-dot.completed { background-color: #198754; box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.2); }
+
+/* Custom badges */
+.badge-warning { background-color: rgba(255, 193, 7, 0.15); color: #b28600; }
+.badge-info { background-color: rgba(13, 202, 240, 0.15); color: #087f96; }
+.badge-success { background-color: rgba(25, 135, 84, 0.15); color: #0f5132; }
+.badge-secondary { background-color: rgba(108, 117, 125, 0.15); color: #495057; }
+
+/* Progress Bar */
+.custom-progress-bar {
+  background: linear-gradient(90deg, #0d6efd 0%, #00d2ff 100%);
+  border-radius: 10px;
+  transition: width 1s ease-in-out;
+}
+
+/* Buttons */
+.quick-actions-section .btn {
+  transition: all 0.2s;
+}
+
+.quick-actions-section .btn-light:hover {
+  background-color: #e9ecef;
+  transform: translateX(5px);
+}
+
+.quick-actions-section .btn-primary:hover {
+  transform: translateX(5px);
+  background-color: #0b5ed7;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .mt-neg-4 {
+    margin-top: -2rem;
+  }
+  .dashboard-header {
+    padding-bottom: 3.5rem !important;
+  }
+  .user-name {
+    font-size: 1.8rem;
+  }
+}

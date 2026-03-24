@@ -1,85 +1,13 @@
 body{
-margin:0;
+background:#f4f6f8;
 font-family:Arial, Helvetica, sans-serif;
-background:#f2f4f7;
-}
-
-.main{
-display:flex;
-justify-content:center;
-padding:40px;
-}
-
-.container{
-width:800px;
-}
-
-h1{
-text-align:center;
-margin-bottom:20px;
-}
-
-.post-form{
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-
-.post-form input{
-padding:10px;
-border:1px solid #ccc;
-border-radius:5px;
-}
-
-.post-form button{
-grid-column:span 2;
-padding:12px;
-background:#0d6efd;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.post-form button:hover{
-background:#0b5ed7;
-}
-
-h2{
-margin-top:40px;
-}
-
-.posts{
-margin-top:20px;
-display:grid;
-gap:20px;
 }
 
 .card{
-background:white;
-padding:20px;
 border-radius:10px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
+border:none;
 }
 
-.card h3{
-margin-bottom:10px;
-}
-
-.skills{
-margin-top:10px;
-}
-
-.skills span{
-background:#0d6efd;
-color:white;
-padding:5px 10px;
-margin-right:5px;
-border-radius:5px;
-font-size:12px;
+h1{
+font-weight:700;
 }

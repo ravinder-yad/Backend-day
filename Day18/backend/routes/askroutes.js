@@ -1,14 +1,8 @@
 const express = require("express")
+
 const router = express.Router()
 
-const {
-createTask,
-getTask,
-getTaskById,
-updateTask,
-deleteTask,
-searchTask
-} = require("../controllers/askController")
+const { createTask, getTask, getTaskById, updateTask, deleteTask, searchTask } = require("../controllers/askController")
 
 router.post("/", createTask)
 router.get("/", getTask)
