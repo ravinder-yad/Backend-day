@@ -5,8 +5,8 @@ const fileSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    imageUrl: {
-        type: String,
+    images: {
+        type: [String],
         required: true
     },
     publicId: {

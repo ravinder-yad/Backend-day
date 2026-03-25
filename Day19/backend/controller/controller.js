@@ -1,88 +1,106 @@
 const File = require("../models/models");
-const fs = require("fs");
-const path = require("path");
 
+// Upload File
 const uploadFile = async (req, res) => {
     try {
-        const files = req.files;
-        const { title } = req.body;
+        const { title, publicId, size, uploadedAt, images } = req.body;
 
-        if (!files || files.length === 0) {
-            return res.status(400).json({ message: "Files are required" });
+        const imageFiles = req.files.map(file => file.filename);
+
+        if (!title) {
+            return res.status(400).json({
+                message: "Title and Image URL are required"
+            });
         }
-
-        const images = files.map(file => file.filename);
-
-        // Replace backslashes with forward slashes for URL compatibility
-        const safePath = files[0].path.replace(/\\/g, '/');
 
         const newFile = await File.create({
             title,
-            imageUrl: safePath,
-            publicId: images.join(', '),
-            size: files.reduce((acc, file) => acc + file.size, 0)
+            images: imageFiles,
+            publicId,
+            size,
+            uploadedAt: uploadedAt || Date.now()
         });
 
         res.status(201).json({
-            message: "Files uploaded successfully",
-            count: files.length,
-            filenames: images,
+            success: true,
+            message: "File uploaded successfully",
             data: newFile
         });
 
     } catch (error) {
         res.status(500).json({
+            success: false,
             message: "File upload failed",
             error: error.message
         });
     }
 };
 
+// Get All Files
 const getAllFiles = async (req, res) => {
     try {
         const files = await File.find().sort({ uploadedAt: -1 });
-        res.status(200).json(files);
+
+        res.status(200).json({
+            success: true,
+            count: files.length,
+            data: files
+        });
+
     } catch (error) {
-        res.status(500).json({ message: "Failed to fetch files", error: error.message });
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch files",
+            error: error.message
+        });
     }
 };
 
+// Delete Single File (DB only)
 const deleteFile = async (req, res) => {
     try {
         const file = await File.findById(req.params.id);
+
         if (!file) {
-            return res.status(404).json({ message: "File not found" });
+            return res.status(404).json({
+                success: false,
+                message: "File not found"
+            });
         }
 
-        const filePath = path.join(__dirname, '..', file.imageUrl);
-        if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
-        }
+        await file.deleteOne();
 
-        await File.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: "File deleted successfully" });
+        res.status(200).json({
+            success: true,
+            message: "File deleted successfully (DB only)"
+        });
+
     } catch (error) {
-        res.status(500).json({ message: "Delete failed", error: error.message });
+        res.status(500).json({
+            success: false,
+            message: "Delete failed",
+            error: error.message
+        });
     }
 };
 
+// Delete All Files (DB only)
 const deleteAllFiles = async (req, res) => {
-    console.log("Delete All Route Hit");
     try {
-        const files = await File.find();
+        const result = await File.deleteMany();
 
-        // Delete all files from storage
-        files.forEach(file => {
-            const filePath = path.join(__dirname, '..', file.imageUrl);
-            if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
-            }
+        res.status(200).json({
+            success: true,
+            message: "All files deleted successfully (DB only)",
+            deletedCount: result.deletedCount
         });
 
-        await File.deleteMany();
-        res.status(200).json({ message: "All files deleted successfully" });
     } catch (error) {
-        res.status(500).json({ message: "Delete all failed", error: error.message });
+        res.status(500).json({
+            success: false,
+            message: "Delete all failed",
+            error: error.message
+        });
     }
 };
 
