@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #0d6efd;
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  color: #333;
+}
+
+/* Floating Labels Styling */
+.form-floating > .form-control:focus,
+.form-floating > .form-control:not(:placeholder-shown) {
+  padding-top: 1.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.form-floating > .form-control:-webkit-autofill {
+  padding-top: 1.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.form-floating > label {
+  padding: 1rem 0.75rem;
+  color: #999;
+  transition: all 0.2s ease;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  opacity: 0.65;
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* Auth Card Polish */
+.auth-card {
+  border-radius: 28px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05) !important;
+}
+
+.otp-box {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.otp-box:focus {
+  transform: translateY(-5px);
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 10px 20px rgba(13, 110, 253, 0.15) !important;
+}
+
+/* Dashboard Utils */
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  background: #eee;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.chart-bar {
+  height: 100px;
+  width: 10px;
+  background: #eee;
+  border-radius: 5px;
+  position: relative;
+}
+
+.chart-bar-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: var(--primary-color);
+  border-radius: 5px;
+  transition: height 1s ease;
+}
